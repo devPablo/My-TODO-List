@@ -9,6 +9,7 @@ let inputItem = document.querySelector('#inputItem');
 let addItemButton = document.querySelector('#addItemButton');
 let itemList = document.querySelector('#itemList');
 let topAddItem = document.querySelector('#topAddItem');
+let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dev'];
 
 // Event listeners
 title.addEventListener('keydown', updateTitle);
@@ -78,7 +79,25 @@ function addItem() {
 		let itemDiv = document.createElement('div');
 		itemDiv.classList.add('divItem');
 
+		let itemDateSpan = document.createElement('span');
+		let date = new Date();
+		itemDateSpan.classList.add('itemDate');
+
+		let month = date.getUTCMonth();
+		let day = date.getDate();
+		let year = date.getFullYear();
+
+		itemDateSpan.innerHTML = months[month] + ' ' + day + ', ' + year;
+
+
+		let deleteItemI = document.createElement('i');
+		deleteItemI.classList.add('deleteItem');
+		deleteItemI.classList.add('fas');
+		deleteItemI.classList.add('fa-times');
+
 		itemDiv.appendChild(itemSpan);
+		itemDiv.appendChild(itemDateSpan);
+		itemDiv.appendChild(deleteItemI);
 		itemList.appendChild(itemDiv);
 	}
 }

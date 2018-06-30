@@ -119,29 +119,46 @@ nav {
 
 .divItem {
 	position: relative;
-	width: 90%;
+	width: 80%;
 	height: 50px;
-	margin: 15px auto;
-	background-color: #90A4AE;
-	border-radius: 15px;
+	margin: 20px auto;
+	border-bottom: 1px solid #D0D0D0;
+	cursor: default;
+	transition: all 0.3s ease;
+}
+
+.itemDate {
+	position: absolute;
+	top: 22.5px;
+	left: 26px;
+	color: gray;
+	font-size: 14px;
+}
+
+.deleteItem {
+	position: absolute;
+	top: 0;
+	right: 10px;
+	margin-top: 4px;
+	font-size: 16px;
+	color: #F44336;
 	cursor: pointer;
 	transition: all 0.3s ease;
 }
 
-.divItem:hover {
-	background-color: #607D8B;
+.deleteItem:hover {
+	color: #D32F2F;
 }
-
 
 .items {
 	position: absolute;
-	top: 13.5px;
+	top: 0px;
 	left: 25px;
-	color: #FFF;
+	color: #212121;
 	font-size: 18px;
 }
 
-.items::selection {
+.divItem *::selection {
 	background-color: transparent;
 }
 
