@@ -158,8 +158,18 @@ nav {
 	font-size: 18px;
 }
 
-.divItem *::selection {
+.divItem *::selection, #emptyList::selection {
 	background-color: transparent;
+}
+
+#emptyList {
+	top: 50%;
+	right: 50%;
+	position: absolute;
+	font-size: 40px;
+	color: #6D6D6D;
+	transform: translate(50%, 50%);
+	cursor: default;
 }
 
 ::-webkit-scrollbar {

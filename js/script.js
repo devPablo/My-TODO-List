@@ -9,7 +9,9 @@ let inputItem = document.querySelector('#inputItem');
 let addItemButton = document.querySelector('#addItemButton');
 let itemList = document.querySelector('#itemList');
 let topAddItem = document.querySelector('#topAddItem');
-let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dev'];
+let emptyList = document.querySelector('#emptyList');
+
+let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 // Event listeners
 title.addEventListener('keydown', updateTitle);
@@ -49,11 +51,20 @@ function checkAddItemButton() {
 	}
 }
 
-function checkAddItem() {
+function checkAddItem(e) {
 	if (checkAddItemButton()) {
 		addItemButton.style.backgroundColor = '#009688';
+		if (e.keyCode == 13) {
+			addItem();
+		}	
 	} else {		
 		addItemButton.style.backgroundColor = '#F44336';
+	}
+	
+	if (e != undefined) {
+		if (e.keyCode == 27) {
+			this.blur();
+		}
 	}
 }
 
@@ -94,10 +105,29 @@ function addItem() {
 		deleteItemI.classList.add('deleteItem');
 		deleteItemI.classList.add('fas');
 		deleteItemI.classList.add('fa-times');
+		deleteItemI.addEventListener('click', deleteItem);
 
 		itemDiv.appendChild(itemSpan);
 		itemDiv.appendChild(itemDateSpan);
 		itemDiv.appendChild(deleteItemI);
 		itemList.appendChild(itemDiv);
+
+		checkEmptyList();
+	}
+}
+
+function deleteItem() {
+	let itemToRemove = this.parentElement;
+	let parentElement = itemToRemove.parentElement;
+	parentElement.removeChild(itemToRemove);
+
+	checkEmptyList();
+}
+
+function checkEmptyList() {
+	if (itemList.innerText == '') {
+		emptyList.style.display = 'block';
+	} else {
+		emptyList.style.display = 'none';
 	}
 }
