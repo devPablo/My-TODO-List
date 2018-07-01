@@ -20,6 +20,8 @@ inputItem.addEventListener('keyup', checkAddItem);
 itemList.addEventListener('scroll', updateListShadow);
 addItemButton.addEventListener('click', addItem);
 
+// Init functions
+loadItems();
 checkAddItem();
 updateListShadow();
 
@@ -78,27 +80,32 @@ function updateListShadow() {
 
 function addItem() {
 	if (checkAddItemButton()) {
-		let item = inputItem.value;
+		let myTODOList = getItemList();	
+		let itemID = myTODOList.length+1;
+
+		let itemName = inputItem.value;
 		inputItem.value = '';
 		
 		checkAddItem();
 
 		let itemSpan = document.createElement('span');
-		itemSpan.innerHTML = item;
+		itemSpan.innerHTML = itemName;
 		itemSpan.classList.add('items');
 
 		let itemDiv = document.createElement('div');
 		itemDiv.classList.add('divItem');
+		itemDiv.setAttribute('id', itemID);
 
 		let itemDateSpan = document.createElement('span');
 		let date = new Date();
 		itemDateSpan.classList.add('itemDate');
 
-		let month = date.getUTCMonth();
+		let month = date.getUTCMonth()-1;
 		let day = date.getDate();
 		let year = date.getFullYear();
 
-		itemDateSpan.innerHTML = months[month] + ' ' + day + ', ' + year;
+		let itemDate = months[month] + ' ' + day + ', ' + year;	
+		itemDateSpan.innerHTML = itemDate;
 
 
 		let deleteItemI = document.createElement('i');
@@ -112,16 +119,37 @@ function addItem() {
 		itemDiv.appendChild(deleteItemI);
 		itemList.appendChild(itemDiv);
 
+		
+		let item = new Item(itemID, itemName, itemDate);	
+		myTODOList.push(item);
+
+		localStorage.setItem('itemListKey', JSON.stringify(myTODOList));
+
 		checkEmptyList();
 	}
 }
 
 function deleteItem() {
 	let itemToRemove = this.parentElement;
+	let itemID = itemToRemove.id;
+	console.log('#' + itemToRemove.id);
+	let myTODOList = getItemList();
+	
+	for (let i = 0; i < myTODOList.length; i++) {
+		if (myTODOList[i].id == itemID) {
+			myTODOList.splice(i, 1);
+		}
+			
+	}
+	localStorage.setItem('itemListKey', JSON.stringify(myTODOList));
+
+
 	let parentElement = itemToRemove.parentElement;
 	parentElement.removeChild(itemToRemove);
 
 	checkEmptyList();
+
+	console.log(getItemList());
 }
 
 function checkEmptyList() {
@@ -130,4 +158,53 @@ function checkEmptyList() {
 	} else {
 		emptyList.style.display = 'none';
 	}
+}
+
+
+
+
+
+
+
+
+function loadItems() {
+	let myTODOList = getItemList();	
+	let itemID, itemName, itemDate, itemSpan, itemDiv, itemDateSpan, deleteItemI;
+
+	for (let i = 0; i < myTODOList.length; i++) {
+		itemID = myTODOList[i].id;
+		itemName = myTODOList[i].name;
+		inputItem.value = '';
+		
+		checkAddItem();
+
+		itemSpan = document.createElement('span');
+		itemSpan.innerHTML = itemName;
+		itemSpan.classList.add('items');
+
+		itemDiv = document.createElement('div');
+		itemDiv.classList.add('divItem');
+		itemDiv.setAttribute('id', itemID);
+
+		itemDateSpan = document.createElement('span');
+		itemDateSpan.classList.add('itemDate');
+
+		itemDate = myTODOList[i].date;	
+		itemDateSpan.innerHTML = itemDate;
+
+
+		deleteItemI = document.createElement('i');
+		deleteItemI.classList.add('deleteItem');
+		deleteItemI.classList.add('fas');
+		deleteItemI.classList.add('fa-times');
+		deleteItemI.addEventListener('click', deleteItem);
+
+		itemDiv.appendChild(itemSpan);
+		itemDiv.appendChild(itemDateSpan);
+		itemDiv.appendChild(deleteItemI);
+		itemList.appendChild(itemDiv);
+
+		checkEmptyList();
+	}
+		
 }
