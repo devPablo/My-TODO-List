@@ -36,13 +36,14 @@ function updateTitle(e) {
 		this.blur();
 	}
 
-	console.log(titleLength);
+	localStorage.setItem('itemListTitleKey', title.innerText);
 }
 
 function exitTitle() {
 	if (title.innerText.length == 0) {
 		title.innerText = 'My to do list';
 	}
+	localStorage.setItem('itemListTitleKey', title.innerText);
 }
 
 function checkAddItemButton() {
@@ -100,7 +101,7 @@ function addItem() {
 		let date = new Date();
 		itemDateSpan.classList.add('itemDate');
 
-		let month = date.getUTCMonth()-1;
+		let month = date.getUTCMonth();
 		let day = date.getDate();
 		let year = date.getFullYear();
 
@@ -132,7 +133,6 @@ function addItem() {
 function deleteItem() {
 	let itemToRemove = this.parentElement;
 	let itemID = itemToRemove.id;
-	console.log('#' + itemToRemove.id);
 	let myTODOList = getItemList();
 	
 	for (let i = 0; i < myTODOList.length; i++) {
@@ -148,8 +148,6 @@ function deleteItem() {
 	parentElement.removeChild(itemToRemove);
 
 	checkEmptyList();
-
-	console.log(getItemList());
 }
 
 function checkEmptyList() {
@@ -170,6 +168,13 @@ function checkEmptyList() {
 function loadItems() {
 	let myTODOList = getItemList();	
 	let itemID, itemName, itemDate, itemSpan, itemDiv, itemDateSpan, deleteItemI;
+
+	let itemListTitle = localStorage.getItem('itemListTitleKey');
+	if (itemListTitle == null || itemListTitle == '') {
+		title.innerText = 'My to do list';
+	} else {
+		title.innerText = itemListTitle;
+	}
 
 	for (let i = 0; i < myTODOList.length; i++) {
 		itemID = myTODOList[i].id;
